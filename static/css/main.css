@@ -1,0 +1,100 @@
+body {
+  font-family: "Inter", sans-serif;
+  font-family: "Poppins", sans-serif;
+  background-color: #f4f6f7;
+}
+
+.font-700 {
+  font-weight: 700;
+}
+
+.auth-bg {
+  background-color: #0b2447;
+  color: #fff;
+}
+
+.form-control {
+  border-radius: 0px !important;
+  height: 50px;
+}
+
+.btn-black {
+  color: #fff;
+  background-color: #000000;
+  border-color: #000000;
+}
+
+.btn-black:hover {
+  color: #fff;
+  background-color: #141515;
+  border-color: #141515;
+}
+
+/*------------------ADMIN PANEL CSS----------------*/
+
+.sidebar {
+  width: 55px;
+  height: 100%;
+  background-color: #fff;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  position: fixed;
+}
+
+.sidebar .logo-holder {
+  width: 55px;
+  height: 60px;
+  background-color: #0b2447;
+}
+
+.sidebar a {
+  font-size: 16px;
+  padding: 15px 8px 12px 8px;
+  display: block;
+  color: #0b2447;
+}
+
+.top-nav {
+  height: 60px;
+  margin-left: 55px;
+}
+
+.main {
+  margin-left: 55px;
+}
+
+.body-holder {
+  background-color: #f4f6f7;
+  min-height: 100vh;
+}
+
+.summary-container {
+  width: 100%;
+  height: 150px;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.summary-container .icon {
+  background-color: #0b2447;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.summary-container .total-number {
+  font-size: 35px;
+}
+
+.chart-container {
+  width: 100%;
+  height: 380px;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
