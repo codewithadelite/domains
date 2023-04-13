@@ -1,0 +1,55 @@
+{% extends 'flags/base.html' %} {% load static %} {% block body %}
+<div class="container-fluid">
+  <div class="table-holder mt-3">
+    <div class="card">
+      <div class="card-container">
+        <div class="card-header">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h6 class="font-700 text-dark">Change password</h6>
+            </div>
+            <div>
+              <span class="icon-question mr-2"></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <form action="">
+            <div class="row">
+              <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                  <label for="Current_password">Current password</label>
+                  <input type="password" class="form-control" />
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                  <label for="New_password">New password</label>
+                  <input type="password" class="form-control" />
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                  <label for="Confirm_password">Confirm password</label>
+                  <input type="password" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <div class="form-group">
+                  <button class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block header-title %}
+<div class="d-flex align-items-center justify-content-between w-100">
+  <h4 class="text-dark font-700 mt-1">Settings</h4>
+</div>
+{% endblock %} {% block title %} Settings {% endblock %}

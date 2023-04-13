@@ -4,7 +4,7 @@ from django.db import models
 class Domain(models.Model):
     fqdn = models.CharField(max_length=255)
     created_at = models.DateTimeField()
-    expired_at = models.DateTimeField()
+    expire_at = models.DateTimeField()
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)
 
     def __str__(self) -> str:

@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import ChangePasswordForm
 
 
 class Login(View):
@@ -28,3 +29,16 @@ class Logout(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect(reverse("login"))
+
+
+class ChangePasswordView(LoginRequiredMixin, View):
+    form_class = ChangePasswordForm
+
+    def post(self, request, *args, **kwargs):
+        data = self.form_class(request.data)
+        old_password = data.cleaned_data['old_password']
+        new_password = data.cleaned_data['new_password']
+        confirm_password = data.cleaned_data['confirm_password']
+
+        if not request.user.check_password(old_password):
+            pass

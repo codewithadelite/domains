@@ -1,0 +1,82 @@
+{% extends 'flags/base.html' %} {% load static %} {% block body %}
+<div class="container-fluid">
+  <div class="filter-holder p-3 mt-3">
+    <table class="table table-collapse table-hover">
+      <thead>
+        <th>FQDN</th>
+        <th>Created at</th>
+        <th>Expire at</th>
+        <th>Deleted at</th>
+      </thead>
+      <tbody>
+        <td>adelite.be</td>
+        <td>2001/02/93</td>
+        <td>2001/02/93</td>
+        <td>
+          <span class="badge badge-success">NOT DELETED</span>
+        </td>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-holder mt-3">
+    <div class="card">
+      <div class="card-container">
+        <div class="card-header">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h6 class="font-700 text-dark">Domain flags</h6>
+            </div>
+            <div>
+              <span class="icon-question mr-2"></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped table-hover">
+            <thead>
+              <th class="text-dark">Flag type</th>
+              <th class="text-dark">Valid from</th>
+              <th class="text-dark">Valid to</th>
+            </thead>
+            <tbody>
+              <tr onclick="return confirm('Do you want to redirect?')">
+                <td>
+                  <span class="badge badge-danger">DELETED</span>
+                </td>
+                <td>2023/01/12</td>
+                <td>2024/01/12</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <span class="badge badge-warning">OUTZONE</span>
+                </td>
+                <td>2023/01/12</td>
+                <td>2024/01/12</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="badge badge-danger">DELETED</span>
+                </td>
+                <td>2023/01/12</td>
+                <td>2024/01/12</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block header-title %}
+<div class="d-flex align-items-center justify-content-between w-100">
+  <h4 class="text-dark font-700 mt-1">Details</h4>
+  <a href="{% url 'add-domains' %}" style="text-decoration: none">
+    <button class="btn btn-danger">
+      <div class="d-flex align-items-center">
+        <span class="icon-trash mr-1"></span> Delete
+      </div>
+    </button>
+  </a>
+</div>
+{% endblock %} {% block title %} ADELITE.BE {% endblock %}

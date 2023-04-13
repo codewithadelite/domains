@@ -1,0 +1,23 @@
+{% extends 'flags/base.html' %} {% load static %} {% block body %}
+<div class="container-fluid h-75">
+  <div class="row d-flex align-items-center justify-content-center h-100">
+    <div class="col-lg-8 col-md-8">
+      <div
+        class="dropzone-container p-3 mt-3 d-flex align-items-center justify-content-center"
+      >
+        <div class="text-center">
+          <h4 class="font-700 text-dark">Drag and drop domains JSON files</h4>
+          <p>Or click to select file</p>
+        </div>
+      </div>
+      <button class="btn btn-primary mt-3">
+        <span class="icon-doc mr-1"></span>Save files
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block header-title %}
+<div class="d-flex align-items-center justify-content-between w-100">
+  <h4 class="text-dark font-700 mt-1">Add domains</h4>
+</div>
+{% endblock %} {% block title %} ADD DOMAINS {% endblock %}

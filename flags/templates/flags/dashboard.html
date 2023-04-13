@@ -1,9 +1,31 @@
 {% extends 'flags/base.html' %} {% load static %} {% block body %}
 <div class="container-fluid">
-  <div class="dashboard-summary mt-3">
+  <div class="dashboard-summary">
+    <div class="d-flex align-items-center justify-content-between mb-4 mt-3">
+      <div>
+        <h5 class="text-dark font-700 mt-1">Overview</h5>
+      </div>
+      <div class="dropdown dropleft">
+        <button
+          class="btn btn-outline-dark d-flex align-items-center dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span class="icon-calendar ml-2 mr-2"></span> All time
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">All time</a>
+          <a class="dropdown-item" href="#">Last month</a>
+          <a class="dropdown-item" href="#">Last year</a>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-lg-4 col-md-4">
-        <div class="summary-container p-3">
+        <div class="summary-container p-3 mb-3">
           <div
             class="summary-header d-flex justify-content-between align-items-center w-100"
           >
@@ -25,7 +47,7 @@
         </div>
       </div>
       <div class="col-lg-4 col-md-4">
-        <div class="summary-container p-3">
+        <div class="summary-container p-3 mb-3">
           <div
             class="summary-header d-flex justify-content-between align-items-center w-100"
           >
@@ -47,7 +69,7 @@
         </div>
       </div>
       <div class="col-lg-4 col-md-4">
-        <div class="summary-container p-3">
+        <div class="summary-container p-3 mb-3">
           <div
             class="summary-header d-flex justify-content-between align-items-center w-100"
           >
@@ -71,12 +93,209 @@
     </div>
   </div>
   <div class="charts mt-3">
+    <div class="d-flex align-items-center justify-content-between mb-4 mt-3">
+      <div>
+        <h5 class="text-dark font-700 mt-1">Domains</h5>
+      </div>
+      <a href="{% url 'domains' %}" style="text-decoration: none;">
+        <button class="btn btn-primary d-flex align-items-center">
+          <span class="icon-eye ml-2 mr-2"></span> View domains
+        </button>
+    </a>
+      
+    </div>
     <div class="row">
       <div class="col-lg-12 col-md-12">
-        <div class="chart-container"></div>
+        <div class="chart-container p-3">
+          <div class="row">
+            <div class="col-lg-8">
+              <canvas id="domainsChart" style="width: 100%"></canvas>
+            </div>
+            <div class="col-lg-4">
+              <canvas id="domainsPie" style="width: 100%"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="table-holder mt-3">
+    <div class="card">
+      <div class="card-container">
+        <div class="card-header">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h6 class="font-700 text-dark">Latest Domains</h6>
+            </div>
+            <div>
+              <span class="icon-eye mr-2"></span>
+              <span class="icon-question mr-2"></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table table-collapse table-hover">
+            <thead>
+              <th class="text-dark">Status</th>
+              <th class="text-dark">Domain</th>
+              <th class="text-dark">Created at</th>
+              <th class="text-dark">Expire on</th>
+            </thead>
+            <tbody>
+                <tr onclick="return confirm('Do you want to redirect?')">
+                  <td>
+                    <span class="badge badge-danger">DELETED</span>
+                  </td>
+                  <td class="text-dark"><strong>adelite.be</strong></td>
+                  <td>2023/01/12</td>
+                  <td>2024/01/12</td>
+                  
+              </a>
+              <tr>
+                <td>
+                  <span class="badge badge-warning">OUTZONE</span>
+                </td>
+                <td class="text-dark"><strong>shema.com</strong></td>
+                <td>2023/01/12</td>
+                  <td>2024/01/12</td>
+                
+              </tr>
+              <tr>
+                <td>
+                  <span class="badge badge-danger">DELETED</span>
+                </td>
+                <td class="text-dark"><strong>adelite.be</strong></td>
+                <td>2023/01/12</td>
+                <td>2024/01/12</td>
+                
+              </tr>
+              <tr>
+                <td>
+                  
+                  <span class="badge badge-primary">EXPIRED</span>
+                </td>
+                <td class="text-dark"><strong>adelite.be</strong></td>
+                <td>2023/01/12</td>
+                <td>2024/01/12</td>
+                
+              </tr>
+              <tr>
+                <td>
+                  <span class="badge badge-danger">DELETED</span>
+                </td>
+                <td class="text-dark"><strong>adelite.be</strong></td>
+                <td>2023/01/12</td>
+                <td>2024/01/12</td>
+                
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
-{% endblock %} {% block header-title %}Dashboard{% endblock %} {% block title %}
-Dashboard {% endblock %}
+{% endblock %} {% block header-title %}
+<div class="d-flex align-items-center justify-content-between w-100">
+  <h4 class="text-dark font-700 mt-1">Dashboard</h4>
+  <div>
+    <button class="btn btn-danger">
+      <div class="d-flex align-items-center">
+        <span class="icon-trash mr-1"></span> Delete
+      </div>
+    </button>
+    <button class="btn btn-primary">
+      <div class="d-flex align-items-center">
+        <span class="icon-plus mr-1"></span> Save
+      </div>
+    </button>
+  </div>
+</div>
+{% endblock %} {% block title %}
+Dashboard {% endblock %} {% block scripts %}
+<script>
+  const ctx = document.getElementById("domainsChart");
+  const pie = document.getElementById("domainsPie");
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
+      datasets: [
+        {
+          label: "Domains",
+          data: [43, 36, 64, 54, 38, 67, 70, 75, 80, 81, 89, 94],
+          borderWidth: 1,
+          borderColor: "#0b2447",
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: false,
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+        },
+      },
+      elements: {
+        point: {
+          radius: 0,
+        },
+      },
+      responsive: true,
+      tension: 0.2,
+    },
+  });
+
+  //PIECHART
+
+  const domainData = {
+    labels: ["EXPIRED", "OUTZONE", "DELETE_CANDIDATE"],
+    datasets: [
+      {
+        label: "Domains",
+        data: [250, 70, 94],
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+        ],
+        hoverOffset: 4,
+      },
+    ],
+  };
+
+  new Chart(pie, {
+    type: "doughnut",
+    data: {
+      labels: ["EXPIRED", "OUTZONE", "DELETED"],
+      datasets: [
+        {
+          label: "Domains",
+          data: [250, 70, 94],
+          backgroundColor: ["#4C6ACC", "#0F297F", "#09112C"],
+          hoverOffset: 4,
+        },
+      ],
+    },
+    options: {},
+  });
+</script>
+{% endblock %}
