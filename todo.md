@@ -1,4 +1,6 @@
+```
 JSON STRUCTURE TO BE RECEIVED
+```
 
 {
 "fqdn":"domain.com",
