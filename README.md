@@ -1,3 +1,5 @@
+![alt text](https://github.com/codewithadelite/domains/blob/master/domain1.jpg?raw=true)
+
 # TOOL FOR DOMAINS MANAGEMENT AND INSIGHT
 
 This tool is used to import domains data from JSON files or onboarded through a REST API Endpoint
