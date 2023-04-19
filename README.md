@@ -1,4 +1,4 @@
-![alt text](https://github.com/codewithadelite/domains/blob/master/domain1.jpg?raw=true)
+![alt text](https://github.com/codewithadelite/domains/blob/master/static/images/screenshots/domain1.png?raw=true)
 
 # TOOL FOR DOMAINS MANAGEMENT AND INSIGHT
 
