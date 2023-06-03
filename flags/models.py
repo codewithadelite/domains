@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Domain(models.Model):
@@ -10,16 +11,26 @@ class Domain(models.Model):
     def __str__(self) -> str:
         return self.fqdn
 
+    @property
+    def is_active(self) -> bool:
+        if self.deleted_at is not None:
+            return False
+        if timezone.now() < self.expire_at:
+            return False
+        return True
+
 
 class Flag(models.Model):
     TYPE_CHOICES = (
         ("EXPIRED", "EXPIRED"),
         ("OUTZONE", "OUTZONE"),
-        ("DELETE_CANDIDATE", "DELETE_CANDIDATE")
-
+        ("DELETE_CANDIDATE", "DELETE_CANDIDATE"),
     )
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
-    flag_type = models.CharField(max_length=20, choices=TYPE_CHOICES,)
+    flag_type = models.CharField(
+        max_length=20,
+        choices=TYPE_CHOICES,
+    )
     valid_from = models.DateTimeField()
     valid_to = models.DateTimeField(null=True, blank=True)
 

@@ -21,3 +21,9 @@ Example of domains in JSON:
   ]
 }
 ```
+
+To run this application run the following command:
+
+```
+python3 manage.py runserver
+```

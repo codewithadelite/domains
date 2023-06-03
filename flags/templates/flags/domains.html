@@ -3,7 +3,7 @@
   <div class="filter-holder p-3 mt-3">
     <form action="">
       <div class="row">
-        <div class="col-lg-5 col-md-5">
+        <div class="col-lg-6 col-md-6">
             <label for="status">Status</label>
             <select name="status" class="form-control">
               <option value="">Select flag status</option>
@@ -16,7 +16,7 @@
             <label for="domain">Domain</label>
             <input name="domain" type="text" class="form-control">
         </div>
-        <div class="col-lg-2 col-md-2 d-flex align-items-end">
+        <div class="col-lg-1 col-md-1 d-flex align-items-end">
             <button class="btn btn-filter btn-primary px-3">
               <span class="icon-equalizer"></span>
             </button>
@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="card-body">
-            <table class="table table-collapse table-hover">
+            <table class="table table-striped table-hover">
             <thead>
               <th class="text-dark">Status</th>
               <th class="text-dark">Domain</th>
@@ -47,7 +47,7 @@
               <th></th>
             </thead>
             <tbody>
-                <tr onclick="return confirm('Do you want to redirect?')">
+                <tr>
                   <td>
                     <span class="badge badge-danger">DELETED</span>
                   </td>
