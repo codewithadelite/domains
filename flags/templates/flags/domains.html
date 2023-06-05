@@ -4,22 +4,21 @@
     <form action="">
       <div class="row">
         <div class="col-lg-6 col-md-6">
-            <label for="status">Status</label>
-            <select name="status" class="form-control">
-              <option value="">Select flag status</option>
-              <option value="DELETE">DELETE</option>
-              <option value="DELETE">OUTZONE</option>
-              <option value="DELETE">EXPIRED</option>
-            </select>
+          <label for="status">Status</label>
+          <select name="status" class="form-control">
+            <option value="">Select status</option>
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="DEACTIVE">DEACTIVE</option>
+          </select>
         </div>
         <div class="col-lg-5 col-md-5">
-            <label for="domain">Domain</label>
-            <input name="domain" type="text" class="form-control">
+          <label for="domain">Domain</label>
+          <input name="domain" type="text" class="form-control" />
         </div>
         <div class="col-lg-1 col-md-1 d-flex align-items-end">
-            <button class="btn btn-filter btn-primary px-3">
-              <span class="icon-equalizer"></span>
-            </button>
+          <button class="btn btn-filter btn-primary px-3">
+            <span class="icon-equalizer"></span>
+          </button>
         </div>
       </div>
     </form>
@@ -38,7 +37,7 @@
           </div>
         </div>
         <div class="card-body">
-            <table class="table table-striped table-hover">
+          <table class="table table-striped table-hover">
             <thead>
               <th class="text-dark">Status</th>
               <th class="text-dark">Domain</th>
@@ -47,88 +46,31 @@
               <th></th>
             </thead>
             <tbody>
-                <tr>
-                  <td>
-                    <span class="badge badge-danger">DELETED</span>
-                  </td>
-                  <td class="text-dark"><strong>adelite.be</strong></td>
-                  <td>2023/01/12</td>
-                  <td>2024/01/12</td>
-                  <td class="d-flex justify-content-end">
-                    <a href="{% url 'domain-details' 34 %}">
-                      <button class="btn btn-sm btn-primary mr-2">
-                        <span class="icon-eye"></span>
-                    </button>
-                    </a>
-                    <button class="btn btn-sm btn-danger mr-2">
-                        <span class="icon-trash"></span>
-                    </button>
-                  </td>
-              </a>
+              {% if domains %} {% for domain in domains %}
               <tr>
                 <td>
-                  <span class="badge badge-warning">OUTZONE</span>
+                  {% if domain.is_active %}
+                  <span class="badge badge-success">ACTIVE</span>
+                  {% else %}
+                  <span class="badge badge-danger">DEACTIVE</span>{% endif %}
                 </td>
-                <td class="text-dark"><strong>shema.com</strong></td>
-                <td>2023/01/12</td>
-                <td>2024/01/12</td>
+                <td class="text-dark"><strong>{{domain.fqdn}}</strong></td>
+                <td>{{domain.created_at.date}}</td>
+                <td>{{domain.expire_at.date}}</td>
                 <td class="d-flex justify-content-end">
+                  <a href="{% url 'domain-details' domain.id %}">
                     <button class="btn btn-sm btn-primary mr-2">
-                        <span class="icon-eye"></span>
+                      <span class="icon-eye"></span>
                     </button>
+                  </a>
+                  <a href="">
                     <button class="btn btn-sm btn-danger mr-2">
-                        <span class="icon-trash"></span>
+                      <span class="icon-trash"></span>
                     </button>
-                  </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="badge badge-danger">DELETED</span>
+                  </a>
                 </td>
-                <td class="text-dark"><strong>adelite.be</strong></td>
-                <td>2023/01/12</td>
-                <td>2024/01/12</td>
-                <td class="d-flex justify-content-end">
-                    <button class="btn btn-sm btn-primary mr-2">
-                        <span class="icon-eye"></span>
-                    </button>
-                    <button class="btn btn-sm btn-danger mr-2">
-                        <span class="icon-trash"></span>
-                    </button>
-                  </td>
               </tr>
-              <tr>
-                <td> 
-                  <span class="badge badge-primary">EXPIRED</span>
-                </td>
-                <td class="text-dark"><strong>adelite.be</strong></td>
-                <td>2023/01/12</td>
-                <td>2024/01/12</td>
-                <td class="d-flex justify-content-end">
-                    <button class="btn btn-sm btn-primary mr-2">
-                        <span class="icon-eye"></span>
-                    </button>
-                    <button class="btn btn-sm btn-danger mr-2">
-                        <span class="icon-trash"></span>
-                    </button>
-                  </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="badge badge-danger">DELETED</span>
-                </td>
-                <td class="text-dark"><strong>adelite.be</strong></td>
-                <td>2023/01/12</td>
-                <td>2024/01/12</td>
-                <td class="d-flex justify-content-end">
-                    <button class="btn btn-sm btn-primary mr-2">
-                        <span class="icon-eye"></span>
-                    </button>
-                    <button class="btn btn-sm btn-danger mr-2">
-                        <span class="icon-trash"></span>
-                    </button>
-                  </td>
-              </tr>
+              {% endfor %} {% endif %}
             </tbody>
           </table>
         </div>
@@ -139,7 +81,7 @@
 {% endblock %} {% block header-title %}
 <div class="d-flex align-items-center justify-content-between w-100">
   <h4 class="text-dark font-700 mt-1">Domains</h4>
-  <a href="{% url 'add-domains' %}" style="text-decoration: none;">
+  <a href="{% url 'add-domains' %}" style="text-decoration: none">
     <button class="btn btn-primary d-flex align-items-center">
       <span class="icon-plus ml-2 mr-2"></span> Import domains
     </button>

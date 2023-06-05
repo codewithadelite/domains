@@ -8,7 +8,9 @@
             <h5 class="text-secondary font-700 text-dark">Total domains</h5>
           </div>
           <div>
-            <span class="text-success font-700 total-number">247</span>
+            <span class="text-success font-700 total-number">
+              {{summary.domains.all}}
+            </span>
           </div>
         </div>
       </div>
@@ -17,8 +19,13 @@
           <div class="mt-3">
             <h5 class="text-secondary font-700 text-dark">Total flags</h5>
           </div>
-          <div>
-            <span class="text-success font-700 total-number">400</span>
+          <div class="d-flex align-items-center justify-content-center">
+            <span class="text-success font-700 total-number"
+              >{{summary.flags}}</span
+            >
+            <span class="badge badge-warning ml-3"
+              >For {{summary.domains.all}} Domains</span
+            >
           </div>
         </div>
       </div>
@@ -28,7 +35,9 @@
             <h5 class="text-secondary font-700 text-dark">Expired domains</h5>
           </div>
           <div>
-            <span class="text-danger font-700 total-number">100</span>
+            <span class="text-danger font-700 total-number"
+              >{{summary.domains.expired}}</span
+            >
           </div>
         </div>
       </div>
@@ -92,8 +101,8 @@
                   <span class="badge badge-danger">DEACTIVE</span>{% endif %}
                 </td>
                 <td class="text-dark"><strong>{{domain.fqdn}}</strong></td>
-                <td>{{domain.created_at}}</td>
-                <td>{{domain.expire_at}}</td>
+                <td>{{domain.created_at.date}}</td>
+                <td>{{domain.expire_at.date}}</td>
               </tr>
               {% endfor %} {% endif %}
             </tbody>
@@ -162,16 +171,12 @@
   //PIECHART
 
   const domainData = {
-    labels: ["EXPIRED", "OUTZONE", "DELETE_CANDIDATE"],
+    labels: ["ACTIVE", "EXPIRED"],
     datasets: [
       {
         label: "Domains",
-        data: [250, 70, 94],
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
-        ],
+        data: [3, 1],
+        backgroundColor: ["#4C6ACC", "#0F297F", "#09112C"],
         hoverOffset: 4,
       },
     ],
@@ -180,12 +185,12 @@
   new Chart(pie, {
     type: "doughnut",
     data: {
-      labels: ["EXPIRED", "OUTZONE", "DELETED"],
+      labels: ["ACTIVE", "DEACTIVE"],
       datasets: [
         {
           label: "Domains",
-          data: [250, 70, 94],
-          backgroundColor: ["#4C6ACC", "#0F297F", "#09112C"],
+          data: [3, 1],
+          backgroundColor: ["#0F297F", "#4C6ACC"],
           hoverOffset: 4,
         },
       ],
