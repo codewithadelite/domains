@@ -9,12 +9,18 @@
         <th>Deleted at</th>
       </thead>
       <tbody>
-        <td>adelite.be</td>
-        <td>2001/02/93</td>
-        <td>2001/02/93</td>
+        <td class="text-dark"><strong>{{domain.fqdn}}</strong></td>
+        <td>{{domain.created_at.date}}</td>
+        <td>{{domain.expire_at.date}}</td>
+        {% if domain.deleted_at %}
+        <td>
+          <span class="badge badge-danger"> {{domain.deleted_at.date}} </span>
+        </td>
+        {% else %}
         <td>
           <span class="badge badge-success">NOT DELETED</span>
         </td>
+        {% endif %}
       </tbody>
     </table>
   </div>
@@ -39,28 +45,17 @@
               <th class="text-dark">Valid to</th>
             </thead>
             <tbody>
-              <tr onclick="return confirm('Do you want to redirect?')">
-                <td>
-                  <span class="badge badge-danger">DELETED</span>
-                </td>
-                <td>2023/01/12</td>
-                <td>2024/01/12</td>
-              </tr>
-
+              {% for flag in flags %}
               <tr>
                 <td>
-                  <span class="badge badge-warning">OUTZONE</span>
+                  <span class="{{ flag.class_bg_color }}"
+                    >{{ flag.flag_type}}</span
+                  >
                 </td>
-                <td>2023/01/12</td>
-                <td>2024/01/12</td>
+                <td>{{flag.valid_from.date}}</td>
+                <td>{{flag.valid_to.date}}</td>
               </tr>
-              <tr>
-                <td>
-                  <span class="badge badge-danger">DELETED</span>
-                </td>
-                <td>2023/01/12</td>
-                <td>2024/01/12</td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>

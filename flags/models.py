@@ -36,3 +36,12 @@ class Flag(models.Model):
 
     def __str__(self) -> str:
         return f"{self.domain.fqdn} - {self.flag_type}"
+
+    @property
+    def class_bg_color(self) -> str:
+        if self.flag_type == self.TYPE_CHOICES[0][1]:
+            return "badge badge-warning"
+        if self.flag_type == self.TYPE_CHOICES[1][1]:
+            return "badge badge-success"
+        if self.flag_type == self.TYPE_CHOICES[2][1]:
+            return "badge badge-danger"

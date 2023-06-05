@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
-from django.http import HttpRequest
+from django.http import HttpRequest, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.db.models import Q
@@ -74,8 +74,16 @@ class DomainListView(LoginRequiredMixin, View):
 class DomainDetailView(LoginRequiredMixin, View):
     template_name = "flags/domain-details.html"
 
-    def get(self, request: HttpRequest, id, *args, **kwargs):
-        context = {}
+    def get_domain_object(self, id: int) -> Domain:
+        try:
+            return Domain.objects.get(id=id)
+        except Domain.DoesNotExist:
+            raise Http404
+
+    def get(self, request: HttpRequest, id: int, *args, **kwargs):
+        domain = self.get_domain_object(id)
+        flags = domain.flag_set.all()
+        context = {"domain": domain, "flags": flags}
         return render(request, self.template_name, context)
 
 
