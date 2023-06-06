@@ -1,21 +1,36 @@
 {% extends 'flags/base.html' %} {% load static %} {% block body %}
 <div class="container-fluid">
+  <div class="alert alert-success mt-2" role="alert">
+    <div>
+      Domain deleted successfully
+    </div>
+  </div>
   <div class="filter-holder p-3 mt-3">
-    <form action="">
+    <form method="GET" action="">
       <div class="row">
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-4 col-md-4 mb-2">
           <label for="status">Status</label>
           <select name="status" class="form-control">
-            <option value="">Select status</option>
-            <option value="ACTIVE">ACTIVE</option>
-            <option value="DEACTIVE">DEACTIVE</option>
+            <option value="">All status</option>
+            <option value="ACTIVE" {% if params.status == 'ACTIVE' %}selected{% endif %}>ACTIVE</option>
+            <option value="DEACTIVE" {% if params.status == 'DEACTIVE' %}selected{% endif %}>DEACTIVE</option>
           </select>
         </div>
-        <div class="col-lg-5 col-md-5">
-          <label for="domain">Domain</label>
-          <input name="domain" type="text" class="form-control" />
+        <div class="col-lg-4 col-md-4 mb-2">
+          <label for="tldr">TLDR(Domain extension)</label>
+          <select name="tldr" class="form-control">
+            <option value="">All TLDR</option>
+            <option value=".com" {% if params.tldr == '.com' %}selected{% endif %}>.COM</option>
+            <option value=".io" {% if params.tldr == '.io' %}selected{% endif %}>.IO</option>
+            <option value=".org" {% if params.tldr == '.org' %}selected{% endif %}>.ORG</option>
+            <option value=".be" {% if params.tldr == '.be' %}selected{% endif %}>.BE</option>
+          </select>
         </div>
-        <div class="col-lg-1 col-md-1 d-flex align-items-end">
+        <div class="col-lg-3 col-md-3 mb-2">
+          <label for="domain">Domain</label>
+          <input name="domain" type="text" class="form-control" value="{{params.domain}}"/>
+        </div>
+        <div class="col-lg-1 col-md-1 mb-2 d-flex align-items-end">
           <button class="btn btn-filter btn-primary px-3">
             <span class="icon-equalizer"></span>
           </button>

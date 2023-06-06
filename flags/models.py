@@ -15,7 +15,7 @@ class Domain(models.Model):
     def is_active(self) -> bool:
         if self.deleted_at is not None:
             return False
-        if timezone.now() < self.expire_at:
+        if self.expire_at < timezone.now():
             return False
         return True
 

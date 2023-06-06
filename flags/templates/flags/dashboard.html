@@ -8,7 +8,7 @@
             <h5 class="text-secondary font-700 text-dark">Total domains</h5>
           </div>
           <div>
-            <span class="text-success font-700 total-number">
+            <span class="text-dark font-700 total-number">
               {{summary.domains.all}}
             </span>
           </div>
@@ -20,10 +20,10 @@
             <h5 class="text-secondary font-700 text-dark">Total flags</h5>
           </div>
           <div class="d-flex align-items-center justify-content-center">
-            <span class="text-success font-700 total-number"
+            <span class="text-dark font-700 total-number"
               >{{summary.flags}}</span
             >
-            <span class="badge badge-warning ml-3"
+            <span class="badge badge-success ml-3"
               >For {{summary.domains.all}} Domains</span
             >
           </div>
@@ -117,6 +117,7 @@
   <h4 class="text-dark font-700 mt-1">Dashboard</h4>
 </div>
 {% endblock %} {% block title %} Dashboard {% endblock %} {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const ctx = document.getElementById("domainsChart");
   const pie = document.getElementById("domainsPie");
@@ -170,26 +171,16 @@
 
   //PIECHART
 
-  const domainData = {
-    labels: ["ACTIVE", "EXPIRED"],
-    datasets: [
-      {
-        label: "Domains",
-        data: [3, 1],
-        backgroundColor: ["#4C6ACC", "#0F297F", "#09112C"],
-        hoverOffset: 4,
-      },
-    ],
-  };
+  const pie_data = [3, 3];
 
   new Chart(pie, {
     type: "doughnut",
     data: {
-      labels: ["ACTIVE", "DEACTIVE"],
+      labels: [{% for label in pie_chart_data.labels %} '{{ label }}', {% endfor %}],
       datasets: [
         {
           label: "Domains",
-          data: [3, 1],
+          data: [{% for data in pie_chart_data.data %} '{{ data }}', {% endfor %}],
           backgroundColor: ["#0F297F", "#4C6ACC"],
           hoverOffset: 4,
         },

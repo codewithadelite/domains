@@ -1,12 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.http import HttpRequest, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
+from django.core.exceptions import SuspiciousOperation
 from django.db.models import Q
 
+
 from .models import Domain, Flag
+
+import json
+
+# celery tasks
+
+from .tasks import process_and_save_domains
 
 
 class DashboardView(LoginRequiredMixin, View):
@@ -22,13 +30,22 @@ class DashboardView(LoginRequiredMixin, View):
         all_domains = Domain.objects.all().count()
         expired_domains = Domain.objects.filter(expire_at__lt=timezone.now()).count()
         active_domains = Domain.objects.filter(expire_at__gt=timezone.now()).count()
+        # Summary data to display in dashbord
         summary = {
             "domains": {"all": all_domains, "expired": expired_domains},
             "flags": Flag.objects.all().count(),
         }
-        chart = {"pie_data": [active_domains, expired_domains]}
+        # Pie chart data tha displayed in pie chart
+        pie_chart_data = {
+            "labels": ["ACTIVE", "EXPIRED"],
+            "data": [active_domains, expired_domains],
+        }
         latest_domains = Domain.objects.all()[:5]
-        context = {"latest_domains": latest_domains, "summary": summary, "chart": chart}
+        context = {
+            "latest_domains": latest_domains,
+            "summary": summary,
+            "pie_chart_data": pie_chart_data,
+        }
         return render(request, self.template, context)
 
 
@@ -51,23 +68,30 @@ class DomainListView(LoginRequiredMixin, View):
         domains = Domain.objects.all().order_by("-created_at")[:50]
 
         status = request.GET.get("status", "")
+        tldr = request.GET.get("tldr", "")
         domain = request.GET.get("domain", "")
 
-        if status != "" or domain != "":
-            ACTIVE_STATUS = "ACTIVE"
+        params = {"status": status, "tldr": tldr, "domain": domain}
+
+        if status != "" or tldr != "" or domain != "":
             q = Q()
             if status != "":
+                ACTIVE_STATUS = "ACTIVE"
                 query = (
-                    Q(expire_at__lt=timezone.now())
+                    Q(expire_at__gt=timezone.now())
                     if status == ACTIVE_STATUS
-                    else Q(expire_at__gt=timezone.now())
+                    else Q(expire_at__lt=timezone.now())  # Then it is DEACTIVE
                 )
                 q &= query
+
+            if tldr != "":
+                q &= Q(fqdn__endswith=tldr)
+
             if domain != "":
                 q &= Q(fqdn__icontains=domain)
 
             domains = Domain.objects.filter(q).order_by("-created_at")[:50]
-        context = {"domains": domains}
+        context = {"domains": domains, "params": params}
         return render(request, self.template_name, context)
 
 
@@ -89,6 +113,24 @@ class DomainDetailView(LoginRequiredMixin, View):
 
 class AddDomainsView(LoginRequiredMixin, View):
     template_name = "flags/add-domains.html"
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        try:
+            uploaded_json_file = json.loads(request.FILES.get("file").read())
+            process_and_save_domains.delay(
+                uploaded_json_file
+            )  # Run the task out of HTTP Request&Responce cycle
+        except ValueError:
+            raise SuspiciousOperation("Invalid file. Expect to receive JSON file")
+        return redirect(reverse("domains-add-success"))
+
+
+class DomainsAddSuccessView(LoginRequiredMixin, View):
+    template_name = "flags/domains-add-success.html"
 
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}

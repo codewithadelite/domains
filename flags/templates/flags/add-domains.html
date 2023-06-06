@@ -5,20 +5,27 @@
 >
   <div class="row d-flex align-items-center justify-content-center w-100">
     <div class="col-lg-8 col-md-8">
-      <div
-        class="dropzone-container p-3 mt-3 d-flex align-items-center justify-content-center"
+      <form
+        method="POST"
+        action="{% url 'add-domains' %}"
+        enctype="multipart/form-data"
       >
-        <div class="text-center">
-          <h4 class="font-700 text-dark" style="font-size: 25px">
-            <span class="icon-plus"></span>
-          </h4>
-          <h4 class="font-700 text-dark">Drag and drop domains JSON files</h4>
-          <p>Or click to select file</p>
-        </div>
-      </div>
-      <button class="btn btn-primary mt-3 py-3 px-4">
-        <span class="icon-doc mr-1"></span>Save files
-      </button>
+        {% csrf_token %}
+        <label
+          class="dropzone-container p-3 mt-3 d-flex align-items-center justify-content-center"
+        >
+          <input type="file" name="file" class="d-none" />
+          <div class="text-center">
+            <h4 class="font-700 text-dark" style="font-size: 25px">
+              <span class="icon-plus"></span>
+            </h4>
+            <h4 class="font-700 text-dark">Select domains JSON files</h4>
+          </div>
+        </label>
+        <button class="btn btn-primary mt-3 py-2 px-4">
+          <span class="icon-doc mr-1"></span>Save files
+        </button>
+      </form>
     </div>
   </div>
 </div>
