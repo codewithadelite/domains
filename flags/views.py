@@ -40,7 +40,7 @@ class DashboardView(LoginRequiredMixin, View):
             "labels": ["ACTIVE", "EXPIRED"],
             "data": [active_domains, expired_domains],
         }
-        latest_domains = Domain.objects.all()[:5]
+        latest_domains = Domain.objects.all().order_by("-id")[:5]
         context = {
             "latest_domains": latest_domains,
             "summary": summary,
@@ -65,7 +65,7 @@ class DomainListView(LoginRequiredMixin, View):
         Returns registered domains.
             - It applies filter if status  or domain variable is found in the HTTP request
         """
-        domains = Domain.objects.all().order_by("-created_at")[:50]
+        domains = Domain.objects.all().order_by("-id")[:50]
 
         status = request.GET.get("status", "")
         tldr = request.GET.get("tldr", "")
@@ -100,7 +100,7 @@ class DomainDetailView(LoginRequiredMixin, View):
 
     def get_domain_object(self, id: int) -> Domain:
         try:
-            return Domain.objects.get(id=id)
+            return Domain.objects.get(pk=id)
         except Domain.DoesNotExist:
             raise Http404
 
@@ -109,6 +109,15 @@ class DomainDetailView(LoginRequiredMixin, View):
         flags = domain.flag_set.all()
         context = {"domain": domain, "flags": flags}
         return render(request, self.template_name, context)
+
+    def delete(self, id: int):
+        """
+        Delete domain.
+        """
+        domain = self.get_domain_object(id)
+        deleted, _ = domain.delete()
+        if deleted:
+            return
 
 
 class AddDomainsView(LoginRequiredMixin, View):
@@ -120,9 +129,8 @@ class AddDomainsView(LoginRequiredMixin, View):
 
     def post(self, request: HttpRequest, *args, **kwargs):
         try:
-            uploaded_json_file = json.loads(request.FILES.get("file").read())
             process_and_save_domains.delay(
-                uploaded_json_file
+                domains=json.loads(request.FILES.get("file").read())
             )  # Run the task out of HTTP Request&Responce cycle
         except ValueError:
             raise SuspiciousOperation("Invalid file. Expect to receive JSON file")
