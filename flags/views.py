@@ -35,9 +35,14 @@ class DashboardView(LoginRequiredMixin, View):
         expired_domains = Domain.objects.filter(expire_at__lt=timezone.now()).count()
         active_domains = Domain.objects.filter(expire_at__gt=timezone.now()).count()
 
+        chart_year = request.GET.get("chart_year", None)
+
         YEAR = (
             2022  # TODO We need this year tobe dynamic. It will be passed from frontend
         )
+
+        if chart_year is not None:
+            YEAR = int(chart_year)
 
         domains_creations_chart = Domain.objects.filter(
             created_at__year=YEAR
@@ -69,6 +74,7 @@ class DashboardView(LoginRequiredMixin, View):
             "summary": summary,
             "domains_line_chart_data": domains_line_chart_data,
             "pie_chart_data": pie_chart_data,
+            "chart_year": YEAR,
         }
         return render(request, self.template, context)
 
