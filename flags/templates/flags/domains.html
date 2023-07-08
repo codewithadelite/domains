@@ -1,10 +1,15 @@
 {% extends 'flags/base.html' %} {% load static %} {% block body %}
 <div class="container-fluid">
-  <div class="alert alert-success mt-2" role="alert">
-    <div>
-      Domain deleted successfully
-    </div>
-  </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success mt-2" role="alert">
+        <div>
+          {{ message }}
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+  
   <div class="filter-holder p-3 mt-3">
     <form method="GET" action="">
       <div class="row">
@@ -69,7 +74,11 @@
                   {% else %}
                   <span class="badge badge-danger">DEACTIVE</span>{% endif %}
                 </td>
-                <td class="text-dark"><strong>{{domain.fqdn}}</strong></td>
+                <td class="text-dark">
+                  <a href="{{ domain.site_url }}" target="_blank">
+                    <strong>{{domain.fqdn}}</strong>
+                  </a>
+                </td>
                 <td>{{domain.created_at.date}}</td>
                 <td>{{domain.expire_at.date}}</td>
                 <td class="d-flex justify-content-end">
@@ -78,7 +87,7 @@
                       <span class="icon-eye"></span>
                     </button>
                   </a>
-                  <a href="">
+                  <a href="{% url 'domain-delete' domain.id %}" onclick="return confirm('Are you sure you want delete this domain name?')">
                     <button class="btn btn-sm btn-danger mr-2">
                       <span class="icon-trash"></span>
                     </button>

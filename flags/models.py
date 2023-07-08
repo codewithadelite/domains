@@ -19,6 +19,10 @@ class Domain(models.Model):
             return False
         return True
 
+    @property
+    def site_url(self) -> str:
+        return "http://" + self.fqdn
+
 
 class Flag(models.Model):
     TYPE_CHOICES = (

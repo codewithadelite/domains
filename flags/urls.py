@@ -12,5 +12,10 @@ urlpatterns = [
         name="domains-add-success",
     ),
     path("domains/<int:id>/", views.DomainDetailView.as_view(), name="domain-details"),
+    path(
+        "domains/<int:id>/delete",
+        views.DomainDeleteView.as_view(),
+        name="domain-delete",
+    ),
     path("settings/", views.SettingsView.as_view(), name="settings"),
 ]

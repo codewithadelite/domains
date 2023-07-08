@@ -125,25 +125,13 @@
   new Chart(ctx, {
     type: "line",
     data: {
-      labels: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ],
+      labels: [{% for label in domains_line_chart_data.labels %} '{{ label }}', {% endfor %}],
       datasets: [
         {
           label: "Domains",
-          data: [43, 36, 64, 54, 38, 67, 70, 75, 80, 81, 89, 94],
+          data: [{% for data in domains_line_chart_data.data %} '{{ data }}', {% endfor %}],
           borderWidth: 1,
+          backgroundColor:"#0b2447",
           borderColor: "#0b2447",
         },
       ],

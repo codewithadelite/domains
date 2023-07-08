@@ -3,12 +3,16 @@ from django.urls import reverse
 from django.views import View
 from django.http import HttpRequest, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.utils import timezone
 from django.core.exceptions import SuspiciousOperation
-from django.db.models import Q
+from django.db.models import Q, Count
+from django.db.models.functions import Extract
 
 
 from .models import Domain, Flag
+
+from .constants import MONTHS
 
 import json
 
@@ -30,6 +34,25 @@ class DashboardView(LoginRequiredMixin, View):
         all_domains = Domain.objects.all().count()
         expired_domains = Domain.objects.filter(expire_at__lt=timezone.now()).count()
         active_domains = Domain.objects.filter(expire_at__gt=timezone.now()).count()
+
+        YEAR = (
+            2022  # TODO We need this year tobe dynamic. It will be passed from frontend
+        )
+
+        domains_creations_chart = Domain.objects.filter(
+            created_at__year=YEAR
+        ).aggregate(
+            **{
+                item: Count("pk", filter=Q(created_at__month=value))
+                for (item, value) in MONTHS.items()
+            }
+        )
+
+        domains_line_chart_data = {
+            "labels": [label for label in domains_creations_chart.keys()],
+            "data": [data for data in domains_creations_chart.values()],
+        }
+
         # Summary data to display in dashbord
         summary = {
             "domains": {"all": all_domains, "expired": expired_domains},
@@ -44,6 +67,7 @@ class DashboardView(LoginRequiredMixin, View):
         context = {
             "latest_domains": latest_domains,
             "summary": summary,
+            "domains_line_chart_data": domains_line_chart_data,
             "pie_chart_data": pie_chart_data,
         }
         return render(request, self.template, context)
@@ -110,14 +134,23 @@ class DomainDetailView(LoginRequiredMixin, View):
         context = {"domain": domain, "flags": flags}
         return render(request, self.template_name, context)
 
-    def delete(self, id: int):
+
+class DomainDeleteView(LoginRequiredMixin, View):
+    def get(self, request: HttpRequest, id: int):
         """
         Delete domain.
         """
-        domain = self.get_domain_object(id)
-        deleted, _ = domain.delete()
-        if deleted:
-            return
+        try:
+            domain = Domain.objects.get(pk=id)
+            deleted, _ = domain.delete()
+            if deleted:
+                messages.success(request, f"Domain {domain.fqdn} deleted successfully")
+                return redirect(reverse("domains"))
+        except Domain.DoesNotExist:
+            raise Http404
+        except Exception as e:
+            messages.error(request, f"There was error, Try again later.")
+            return redirect(reverse("domains"))
 
 
 class AddDomainsView(LoginRequiredMixin, View):

@@ -48,9 +48,9 @@
               {% for flag in flags %}
               <tr>
                 <td>
-                  <span class="{{ flag.class_bg_color }}"
-                    >{{ flag.flag_type}}</span
-                  >
+                  <span class="{{ flag.class_bg_color }}">
+                    {{ flag.flag_type}}
+                  </span>
                 </td>
                 <td>{{flag.valid_from.date}}</td>
                 <td>{{flag.valid_to.date}}</td>
@@ -66,7 +66,10 @@
 {% endblock %} {% block header-title %}
 <div class="d-flex align-items-center justify-content-between w-100">
   <h4 class="text-dark font-700 mt-1">Details</h4>
-  <a href="{% url 'add-domains' %}" style="text-decoration: none">
+  <a
+    href="{% url 'domain-delete' domain.id %}"
+    onclick="return confirm('Are you sure you want delete this domain name?')"
+  >
     <button class="btn btn-danger">
       <div class="d-flex align-items-center">
         <span class="icon-trash mr-1"></span> Delete
