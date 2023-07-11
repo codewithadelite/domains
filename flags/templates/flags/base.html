@@ -46,20 +46,31 @@
         <h4 class="text-white"><i class="fa fa-blog"></i></h4>
       </div>
       <div class="link-holder text-center">
+        {% with request.resolver_match.url_name as url_name %}
         <div class="text-center">
-          <a href="{% url 'dashboard' %}" class="text-dark active">
+          <a
+            href="{% url 'dashboard' %}"
+            class="text-dark {% if url_name == 'dashboard' %}active{% endif %}"
+          >
             <span class="icon-pie-chart"></span>
           </a>
-          <a href="{% url 'domains' %}" class="text-dark">
+          <a
+            href="{% url 'domains' %}"
+            class="text-dark {% if url_name == 'domains' %}active{% endif %}"
+          >
             <span class="icon-screen-desktop"></span>
           </a>
-          <a href="{% url 'settings' %}" class="text-dark">
+          <a
+            href="{% url 'settings' %}"
+            class="text-dark {% if url_name == 'settings' %}active{% endif %}"
+          >
             <span class="icon-settings"></span>
           </a>
           <a href="{% url 'logout' %}" class="text-dark">
             <span class="icon-logout"></span>
           </a>
         </div>
+        {% endwith %}
       </div>
     </div>
     <nav class="top-nav navbar sticky-top bg-white">

@@ -37,9 +37,7 @@ class DashboardView(LoginRequiredMixin, View):
 
         chart_year = request.GET.get("chart_year", None)
 
-        YEAR = (
-            2022  # TODO We need this year tobe dynamic. It will be passed from frontend
-        )
+        YEAR = 2022
 
         if chart_year is not None:
             YEAR = int(chart_year)
@@ -69,13 +67,13 @@ class DashboardView(LoginRequiredMixin, View):
             "data": [active_domains, expired_domains],
         }
         latest_domains = Domain.objects.all().order_by("-id")[:5]
-        context = {
-            "latest_domains": latest_domains,
-            "summary": summary,
-            "domains_line_chart_data": domains_line_chart_data,
-            "pie_chart_data": pie_chart_data,
-            "chart_year": YEAR,
-        }
+
+        context = dict()
+        context["latest_domains"] = latest_domains
+        context["summary"] = summary
+        context["domains_line_chart_data"] = domains_line_chart_data
+        context["pie_chart_data"] = pie_chart_data
+        context["chart_year"] = YEAR
         return render(request, self.template, context)
 
 

@@ -152,7 +152,7 @@
       labels: [{% for label in domains_line_chart_data.labels %} '{{ label }}', {% endfor %}],
       datasets: [
         {
-          label: "Domains",
+          label: "Domains created",
           data: [{% for data in domains_line_chart_data.data %} '{{ data }}', {% endfor %}],
           borderWidth: 1,
           backgroundColor:"#0b2447",
@@ -167,7 +167,7 @@
         },
         x: {
           grid: {
-            display: false,
+            display: true,
           },
         },
       },
